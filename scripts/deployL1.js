@@ -14,7 +14,7 @@ async function main() {
   await l1Contract.deployed()
 
   console.log(
-    `deployed to ${l1Contract.address}`
+    `L1Contract was deployed to ${l1Contract.address}`
   )
 }
 

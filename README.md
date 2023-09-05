@@ -16,13 +16,12 @@ It sends the encoded calldata to execute `setGreeting` on L2 which can only be c
 - [`deployL1.js`](./scripts/deployL1.js)
 - [`deployL2.js`](./deploy/deploy.js)
 - [`sendL1ToL2Message.js`](./scripts/sendL1ToL2Message.js)
-- [`waitForInclusion.js`](./scripts/waitForInclusion.js)
 - [`getGreetingOnL2.js`](./scripts/getGreetingOnL2.js)
 
 ## Install
 
 ```sh
-git clone https://github.com/miguelmota/zksync-messenger-l1-to-l2-example.git
+git clone https://github.com/itling/zksync-messenger-l1-to-l2-example.git
 cd zksync-messenger-l1-to-l2-example
 npm install
 ```
@@ -54,7 +53,7 @@ npx hardhat run --network goerli scripts/deployL1.js
 Output
 
 ```sh
-deployed to 0xbb027F3d45CEb4c9F8F1FaB6c7Bad5053A66c9b0
+L1Contract was deployed to 0x9261058579A0b7F88fc4CA52f024Ee01e4D73fFa
 ```
 
 ### Deploy L2 Contract
@@ -62,14 +61,14 @@ deployed to 0xbb027F3d45CEb4c9F8F1FaB6c7Bad5053A66c9b0
 Command
 
 ```sh
-L1_CONTRACT=0xbb027F3d45CEb4c9F8F1FaB6c7Bad5053A66c9b0 \
+L1_CONTRACT=0x9261058579A0b7F88fc4CA52f024Ee01e4D73fFa \
 npx hardhat deploy-zksync --network zksync
 ```
 
 Output
 
 ```sh
-deployed to 0xdA90933EAC728c6e9AF0f5403514439a4Bb6ae90
+L2Contract was deployed  to 0x3A98dbd8fA9825F168A1f0aF5Cb29fe38E9bAb57
 ```
 
 ### Send L1->L2 Message
@@ -78,60 +77,37 @@ Command (replace env vars with your values)
 
 
 ```sh
-GREETING="hello world" \
-L1_CONTRACT=0xbb027F3d45CEb4c9F8F1FaB6c7Bad5053A66c9b0 \
-L2_CONTRACT=0xdA90933EAC728c6e9AF0f5403514439a4Bb6ae90 \
+L1_CONTRACT=0x9261058579A0b7F88fc4CA52f024Ee01e4D73fFa \
+L2_CONTRACT=0x3A98dbd8fA9825F168A1f0aF5Cb29fe38E9bAb57 \
 npx hardhat run --network goerli scripts/sendL1ToL2Message.js
 ```
 
 Output
 
 ```sh
-sent tx hash 0x70b1c11f608a2319fd07dc64f6a0de35ce4e1d483fe0c2a8f09be45c61fb035b
-https://goerli.etherscan.io/tx/0x70b1c11f608a2319fd07dc64f6a0de35ce4e1d483fe0c2a8f09be45c61fb0
+L1 tx hash is >>  0x4ae983b6d07f208d006535583393423b26d2109e9dad0db57349278ed9b1223f
+https://goerli.etherscan.io/tx/0x4ae983b6d07f208d006535583393423b26d2109e9dad0db57349278ed9b1223f
 ```
 
-### Wait for L1 Block Inclusion
-
-Command
-
-```sh
-L1_TX_HASH=0x70b1c11f608a2319fd07dc64f6a0de35ce4e1d483fe0c2a8f09be45c61fb035b \
-npx hardhat run --network zksync scripts/waitForInclusion.js
-```
-
-Output
-
-```sh
-Waiting for L2 block inclusion (this may take up to 20 minutes)...
-{
-  to: '0xdA90933EAC728c6e9AF0f5403514439a4Bb6ae90',
-  from: '0xbb027F3d45CEb4c9F8F1FaB6c7Bad5053A66c9b0',
-  contractAddress: null,
-  transactionIndex: 0,
-  ...
-  l1BatchNumber: 626758,
-  l1BatchTxIndex: 123,
-  l2ToL1Logs: [ ... ],
-  byzantium: true
-}
-```
 
 ### Get Greeting on L2
 
 Command
 
 ```sh
-L2_CONTRACT=0xdA90933EAC728c6e9AF0f5403514439a4Bb6ae90 \
+L2_CONTRACT=0x3A98dbd8fA9825F168A1f0aF5Cb29fe38E9bAb57 \
 npx hardhat run --network zksync scripts/getGreetingOnL2.js
 ```
 
 Output
 
 ```sh
-greeting: hello world
+greeting: Updated at Tue, 05 Sep 2023 14:05:33 GMT
 ```
 
-## License
+### verify contract 
+constract param is applyL1ToL2Alias address
+```
+npx hardhat verify  --network zksync 0x3A98dbd8fA9825F168A1f0aF5Cb29fe38E9bAb57 '0xa372058579a0b7f88fc4ca52f024ee01e4d7510b'
+```
 
-[MIT](./LICENSE) @ [Miguel Mota](https://github.com/miguelmota)

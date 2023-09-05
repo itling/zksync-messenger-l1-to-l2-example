@@ -5,7 +5,7 @@ async function main() {
 
   const L2Contract = await hre.ethers.getContractFactory('L2Contract')
   const l2Contract = L2Contract.attach(l2ContractAddress)
-  const greeting = await l2Contract.greet()
+  const greeting = await l2Contract.greeting()
   console.log(`greeting: ${greeting}`)
 }
 

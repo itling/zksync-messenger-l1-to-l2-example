@@ -11,11 +11,27 @@ async function main(hre) {
   const wallet = new Wallet(process.env.PRIVATE_KEY)
   const deployer = new Deployer(hre, wallet)
   const artifact = await deployer.loadArtifact('L2Contract')
-  const l2Contract = await deployer.deploy(artifact, [l1ContractAddress])
 
-  console.log(
-    `deployed to ${l2Contract.address}`
-  )
+  // // Deposit some funds to L2 to be able to perform deposits.
+  // const deploymentFee = await deployer.estimateDeployFee(artifact, [
+  //   utils.applyL1ToL2Alias(l1ContractAddress),
+  // ]);
+  // const depositHandle = await deployer.zkWallet.deposit({
+  //   to: deployer.zkWallet.address,
+  //   token: utils.ETH_ADDRESS,
+  //   amount: deploymentFee.mul(2),
+  // });
+  // // Wait until the deposit is processed on zkSync
+  // await depositHandle.wait();
+
+  const l2Contract = await deployer.deploy(artifact, [
+    utils.applyL1ToL2Alias(l1ContractAddress),
+  ]);
+
+  // Show the contract info.
+  const contractAddress = l2Contract.address;
+  console.log(`${artifact.contractName} was deployed to ${contractAddress}`);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
